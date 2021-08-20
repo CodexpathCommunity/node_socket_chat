@@ -12,7 +12,6 @@ export default {
       return res.status(500).json({ success: false, error: error });
     }
   },
-
   onGetUserById: async (req, res) => {
     try {
       const user = await UserModel.getUserById(req.params.id);
@@ -21,7 +20,6 @@ export default {
       return res.status(500).json({ success: false, error: error });
     }
   },
-
   onCreateUser: async (req, res) => {
     try {
       const validation = makeValidation((types) => ({
@@ -32,7 +30,7 @@ export default {
           type: { type: types.enum, options: { enum: USER_TYPES } },
         },
       }));
-      if (!validation.success) return res.status(400).json(validation);
+      if (!validation.success) return res.status(400).json({ ...validation });
 
       const { firstName, lastName, type } = req.body;
       const user = await UserModel.createUser(firstName, lastName, type);
@@ -41,7 +39,6 @@ export default {
       return res.status(500).json({ success: false, error: error });
     }
   },
-
   onDeleteUserById: async (req, res) => {
     try {
       const user = await UserModel.deleteByUserById(req.params.id);
