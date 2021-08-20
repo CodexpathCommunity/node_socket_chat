@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+/**
+ * @param {String} firstName
+ * @param {String} lastName
+ * @returns {Object} new user object created
+ */
 userSchema.statics.createUser = async function (firstName, lastName, type) {
   try {
     const user = await this.create({ firstName, lastName, type });
@@ -31,6 +36,10 @@ userSchema.statics.createUser = async function (firstName, lastName, type) {
   }
 };
 
+/**
+ * @param {String} id, user id
+ * @return {Object} User profile object
+ */
 userSchema.statics.getUserById = async function (id) {
   try {
     const user = await this.findOne({ _id: id });
@@ -41,6 +50,9 @@ userSchema.statics.getUserById = async function (id) {
   }
 };
 
+/**
+ * @return {Array} List of all users
+ */
 userSchema.statics.getUsers = async function () {
   try {
     const users = await this.find();
@@ -50,19 +62,27 @@ userSchema.statics.getUsers = async function () {
   }
 };
 
-userSchema.statics.deleteByUserById = async function (id) {
+/**
+ * @param {Array} ids, string of user ids
+ * @return {Array of Objects} users list
+ */
+userSchema.statics.getUserByIds = async function (ids) {
   try {
-    const result = await this.remove({ _id: id });
-    return result;
+    const users = await this.find({ _id: { $in: ids } });
+    return users;
   } catch (error) {
     throw error;
   }
 };
 
-userSchema.statics.getUserByIds = async function (ids) {
+/**
+ * @param {String} id - id of user
+ * @return {Object} - details of action performed
+ */
+userSchema.statics.deleteByUserById = async function (id) {
   try {
-    const users = await this.find({ _id: { $in: ids } });
-    return users;
+    const result = await this.remove({ _id: id });
+    return result;
   } catch (error) {
     throw error;
   }
