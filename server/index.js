@@ -3,6 +3,10 @@ import express from "express";
 import logger from "morgan";
 import cors from "cors";
 import socketio from "socket.io";
+// mongo connection
+import "./config/mongo.js";
+// socket configuration
+import WebSockets from "./utils/WebSockets.js";
 // routes
 import indexRouter from "./routes/index.js";
 import userRouter from "./routes/user.js";
@@ -20,13 +24,7 @@ app.set("port", port);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// mongo connection
-import "./config/mongo.js";
 
-// socket configuration
-import WebSockets from "./utils/WebSockets.js";
-
-// routes
 app.use("/", indexRouter);
 app.use("/users", userRouter);
 app.use("/room", decode, chatRoomRouter);
